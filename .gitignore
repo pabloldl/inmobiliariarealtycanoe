@@ -1,0 +1,7 @@
+.DS_Store
+Thumbs.db
+.qa/chrome/
+.qa/*hashes.json
+.qa/other-projects-before.json
+node_modules/
+*.log

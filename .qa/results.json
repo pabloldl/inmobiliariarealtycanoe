@@ -1,0 +1,95 @@
+{
+  "widths": [
+    {
+      "width": 375,
+      "scrollWidth": 360,
+      "brokenImages": [],
+      "missingAnchors": [],
+      "fonts": true
+    },
+    {
+      "width": 768,
+      "scrollWidth": 753,
+      "brokenImages": [],
+      "missingAnchors": [],
+      "fonts": true
+    },
+    {
+      "width": 1440,
+      "scrollWidth": 1425,
+      "brokenImages": [],
+      "missingAnchors": [],
+      "fonts": true
+    },
+    {
+      "width": 1920,
+      "scrollWidth": 1905,
+      "brokenImages": [],
+      "missingAnchors": [],
+      "fonts": true
+    }
+  ],
+  "errors": [],
+  "menu": {
+    "open": true,
+    "closed": true
+  },
+  "escape": true,
+  "clipboard": "600280386",
+  "copyStatus": "Teléfono copiado: 600 280 386",
+  "telephones": true,
+  "maps": [
+    "Av. Juan XXIII, 23, Pta. Dcha., 11670 El Bosque, Cádiz",
+    "Av. Juan XXIII, 23, Pta. Dcha., 11670 El Bosque, Cádiz"
+  ],
+  "photos": {
+    "count": 5,
+    "unique": 5,
+    "missingAlt": 0
+  },
+  "reducedMotion": true,
+  "fallbackCopy": "Teléfono copiado: 600 280 386",
+  "architecture": {
+    "sectionCount": 5,
+    "rail": "fixed",
+    "coverPortrait": true,
+    "declarationHasNoImage": true,
+    "sequence": [
+      {
+        "width": 1546,
+        "left": 282,
+        "top": 2636
+      },
+      {
+        "width": 928,
+        "left": 699,
+        "top": 3522
+      },
+      {
+        "width": 526,
+        "left": 1302,
+        "top": 4393
+      },
+      {
+        "width": 711,
+        "left": 375,
+        "top": 5068
+      }
+    ],
+    "stackedPhone": true
+  },
+  "mobileHeadline": [
+    {
+      "left": 22,
+      "right": 319.703125,
+      "fits": true
+    },
+    {
+      "left": 44.109375,
+      "right": 308.734375,
+      "fits": true
+    }
+  ],
+  "keyboardIndex": true,
+  "indexFollowsSection": true
+}
