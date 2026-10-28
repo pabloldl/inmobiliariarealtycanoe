@@ -18,27 +18,17 @@ for(const width of [375,768,1440,1920]){
  const shot=await send('Page.captureScreenshot',{format:'png'});fs.writeFileSync(path.join(__dirname,`screen-${width}.png`),Buffer.from(shot.data,'base64'));
 }
 await send('Emulation.setDeviceMetricsOverride',{width:375,height:850,deviceScaleFactor:1,mobile:false});
-report.menu=await ev(`(()=>{const t=document.querySelector('.index-toggle');t.click();const open=t.getAttribute('aria-expanded')==='true';document.querySelector('#navigation a[href="#espacios"]').click();return {open,closed:t.getAttribute('aria-expanded')==='false'}})()`);
-await ev(`document.querySelector('.index-toggle').click()`);await send('Input.dispatchKeyEvent',{type:'keyDown',key:'Escape',code:'Escape'});
-report.escape=await ev(`document.querySelector('.index-toggle').getAttribute('aria-expanded')==='false'&&document.activeElement===document.querySelector('.index-toggle')`);
+
+report.menu=await ev("(()=>{const t=document.querySelector('.menu-toggle');t.click();const open=t.getAttribute('aria-expanded')==='true';document.querySelector('#navigation a[href=\"#inmuebles\"]').click();return {open,closed:t.getAttribute('aria-expanded')==='false'}})()");
+await ev("document.querySelector('.menu-toggle').click()");await send('Input.dispatchKeyEvent',{type:'keyDown',key:'Escape',code:'Escape'});
+report.escape=await ev("document.querySelector('.menu-toggle').getAttribute('aria-expanded')==='false'&&document.activeElement===document.querySelector('.menu-toggle')");
 await send('Browser.grantPermissions',{origin:'http://127.0.0.1:8765',permissions:['clipboardReadWrite','clipboardSanitizedWrite']});
-await ev(`document.querySelector('.copy-phone').click()`);await delay(250);
-report.clipboard=await ev(`navigator.clipboard.readText()`);
-report.copyStatus=await ev(`document.querySelector('#copy-status').textContent`);
-report.telephones=await ev(`[...document.querySelectorAll('a[href^="tel:"]')].every(a=>a.getAttribute('href')==='tel:+34600280386')`);
-report.maps=await ev(`[...document.querySelectorAll('a[href*="google.com/maps"]')].map(a=>new URL(a.href).searchParams.get('query'))`);
-report.photos=await ev(`({count:document.images.length,unique:new Set([...document.images].map(i=>i.src)).size,missingAlt:[...document.images].filter(i=>!i.alt).length})`);
-await send('Emulation.setEmulatedMedia',{features:[{name:'prefers-reduced-motion',value:'reduce'}]});
-report.reducedMotion=await ev(`getComputedStyle(document.documentElement).scrollBehavior==='auto'`);
-report.fallbackCopy=await ev(`(async()=>{Object.defineProperty(navigator,'clipboard',{configurable:true,value:undefined});document.querySelector('.copy-phone').click();await new Promise(r=>setTimeout(r,100));return document.querySelector('#copy-status').textContent})()`);
-for(const width of [375,768,1440,1920]){await send('Emulation.setDeviceMetricsOverride',{width,height:1000,deviceScaleFactor:1,mobile:false});await ev(`document.activeElement.blur();window.scrollTo(0,0);document.querySelectorAll('.pending').forEach(e=>e.classList.remove('pending'))`);await delay(150);const shot=await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:true});fs.writeFileSync(path.join(__dirname,`full-${width}.png`),Buffer.from(shot.data,'base64'));}
-report.architecture=await ev(`({sectionCount:document.querySelectorAll('main>section').length,rail:getComputedStyle(document.querySelector('.publication-rail')).position,coverPortrait:document.querySelector('.cover-image img').getBoundingClientRect().height>document.querySelector('.cover-image img').getBoundingClientRect().width,declarationHasNoImage:!document.querySelector('.declaration img'),sequence:[...document.querySelectorAll('.plate')].map(p=>({width:Math.round(p.getBoundingClientRect().width),left:Math.round(p.getBoundingClientRect().left),top:Math.round(p.getBoundingClientRect().top)})),stackedPhone:document.querySelectorAll('.phone-typesetting>span').length===3})`);
-await send('Emulation.setDeviceMetricsOverride',{width:375,height:850,deviceScaleFactor:1,mobile:false});
-report.mobileHeadline=await ev(`(()=>{const h=document.querySelector('#cover-title');return [...h.children].map(e=>{const r=document.createRange();r.selectNodeContents(e);const b=r.getBoundingClientRect();return {left:b.left,right:b.right,fits:b.left>=0&&b.right<=document.documentElement.clientWidth}})})()`);
-await ev(`document.querySelector('.index-toggle').setAttribute('aria-expanded','false');document.querySelector('#navigation').classList.remove('open');document.querySelector('.index-toggle').focus()`);await send('Input.dispatchKeyEvent',{type:'keyDown',key:'Enter',code:'Enter',windowsVirtualKeyCode:13});await send('Input.dispatchKeyEvent',{type:'char',text:'\r',key:'Enter',code:'Enter',windowsVirtualKeyCode:13});await send('Input.dispatchKeyEvent',{type:'keyUp',key:'Enter',code:'Enter',windowsVirtualKeyCode:13});
-report.keyboardIndex=await ev(`document.querySelector('.index-toggle').getAttribute('aria-expanded')==='true'`);
-await ev(`document.querySelector('#navigation a[href="#ubicacion"]').click()`);await delay(150);
-report.indexFollowsSection=await ev(`document.querySelector('#navigation a[aria-current]')?.hash==='#ubicacion'`);
+await ev("document.querySelector('.copy-phone').click()");await delay(200);report.clipboard=await ev('navigator.clipboard.readText()');
+report.telephones=await ev("[...document.querySelectorAll('a[href^=\"tel:\"]')].every(a=>a.getAttribute('href')==='tel:+34600280386')");
+report.emptyState=await ev("!document.querySelector('#property-empty').hidden&&document.querySelectorAll('.property-card').length===0&&document.querySelectorAll('input,select,form').length===0");
+await send('Emulation.setEmulatedMedia',{features:[{name:'prefers-reduced-motion',value:'reduce'}]});report.reducedMotion=await ev("getComputedStyle(document.documentElement).scrollBehavior==='auto'");
+report.fallbackCopy=await ev("(async()=>{Object.defineProperty(navigator,'clipboard',{configurable:true,value:undefined});document.querySelector('.copy-phone').click();await new Promise(r=>setTimeout(r,100));return document.querySelector('#copy-status').textContent})()");
+for(const width of [375,768,1440,1920]){await send('Emulation.setDeviceMetricsOverride',{width,height:1000,deviceScaleFactor:1,mobile:false});await ev('document.activeElement.blur();window.scrollTo(0,0)');await delay(150);const shot=await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:true});fs.writeFileSync(path.join(__dirname,'full-'+width+'.png'),Buffer.from(shot.data,'base64'));}
 fs.writeFileSync(path.join(__dirname,'results.json'),JSON.stringify(report,null,2));console.log(JSON.stringify(report,null,2));
 await send('Browser.close');ws.close();server.close();
 })().catch(e=>{console.error(e);ws?.close();browser?.kill();server.close();process.exitCode=1});
